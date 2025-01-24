@@ -3,12 +3,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const parentUrl = document.referrer;
     if (parentUrl) {
         const rootDomain = new URL(parentUrl).hostname;
+        let paramValue = null;
+
+        // 조건에 따라 paramValue 설정
+        if (rootDomain === "qkrwjd.tistory.com") {
+            paramValue = "direct";
+        } else if (rootDomain === "slth.tistory.com") {
+            paramValue = "gold";
+        }
+
         const links = document.querySelectorAll("a");
         links.forEach(link => {
             const originalHref = link.getAttribute("href");
             if (originalHref) {
                 const url = new URL(originalHref, window.location.origin);
-                url.searchParams.set("parent_url", rootDomain);
+
+                // paramValue가 설정된 경우에만 추가
+                if (paramValue) {
+                    url.searchParams.set("parent_url", paramValue);
+                }
+
                 link.setAttribute("href", url.toString());
             }
         });
