@@ -1,15 +1,20 @@
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const parentUrl = document.referrer;
-            const links = document.querySelectorAll("a");
-            links.forEach(link => {
-                const originalHref = link.getAttribute("href");
-                const url = new URL(originalHref, window.location.origin); // 상대경로 지원
-                url.searchParams.set("parent_url", parentUrl);
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const parentUrl = document.referrer;
+    if (parentUrl) {
+        const rootDomain = new URL(parentUrl).hostname;
+        const links = document.querySelectorAll("a");
+        links.forEach(link => {
+            const originalHref = link.getAttribute("href");
+            if (originalHref) {
+                const url = new URL(originalHref, window.location.origin);
+                url.searchParams.set("parent_url", rootDomain);
                 link.setAttribute("href", url.toString());
-            });
+            }
         });
-    </script>
+    }
+});
+</script>
 <style>
     a {
         color: #000;
